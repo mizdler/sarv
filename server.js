@@ -19,7 +19,7 @@ server.route({
     path: '/update',
     handler: function (request, reply) {
     	console.log(request.url);
-        lastHumidity = request.query.lastHumidity;
+        lastHumidity = request.query.humidity;
         console.log("lastHumidity = " + lastHumidity);
         //reply('Hello, ' + JSON.stringify(request.query) + '!');
     }
