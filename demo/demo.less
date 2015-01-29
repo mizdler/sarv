@@ -1,0 +1,16 @@
+body {
+    background-color: rgb(251,254,251);
+}
+.pot {
+    position: relative;
+    .pot-frame {
+        visibility: hidden;
+        display: block;
+        left: 0;
+        top: 0;
+        position: absolute;
+        &.visible {
+            visibility: visible;
+        }
+    }
+}
