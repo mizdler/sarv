@@ -17,7 +17,7 @@ var to = 10;
 var fps = 1;
 var update_rate = 4000; 
 var refereshing = false;
-var server = "http://localhost:3000/"
+var server = "http://localhost:5060/getHumidity"
 
 $.elementReady(".pot", function() {
     
