@@ -38,6 +38,17 @@ server.route({
     }
 });
 
+server.route({
+    method: 'GET',
+    path: '/demo/{x*}',
+    handler: {
+        directory: {
+            path: 'demo'
+        }
+    }
+});
+
+
 server.start(function () {
     console.log('Server running at:', server.info.uri);
 });
