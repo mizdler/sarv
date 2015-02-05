@@ -6,13 +6,31 @@
     <script type="text/javascript" src="scripts/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/elementReady.jq.js"></script>
 	<script type="text/javascript" src="scripts/demo.js"></script>
+    <script type="text/javascript" src="scripts/circle-progress.js"></script>
     <link href="demo.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div class="container">
-        <div class="pot">
-            
+    <div id="circle">
+        <strong></strong>
+    </div>
+    <div class="container clearfix">
+        <div class="pot">            
         </div>
     </div>
+    
+    <script>
+    $('#circle').circleProgress({
+        value: current_value,
+        size: 200,
+        startAngle: -Math.PI/2,
+        thickness: 24,
+        fill: {
+            gradient: ["#2196F3"]
+        }
+    });
+    $('#circle').on('circle-animation-progress', function(event, progress, stepValue) {
+        $(this).find('strong').html(parseInt(100 * stepValue) + '<i>%</i>');
+    });
+    </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-Run dummy.js Node server and open demo.html.
+ Run dummy.js Node server and open demo.html.
 Demo page make ajax calls to dummy server, which responds with randomly generated data via JSON.
 
 The lapse footage is copyrighted and is available here: 

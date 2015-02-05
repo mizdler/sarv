@@ -15,10 +15,10 @@ var ratio = 1;
 var from = 1;
 var to = 10;
 var fps = 1;
-var update_rate = 4000; 
-var refereshing = false;
+var update_rate = 4000;
 var server = "http://localhost:3000/"
 
+var refereshing = false;
 $.elementReady(".pot", function() {
     
     setupPot = function (options) {
@@ -59,34 +59,31 @@ $.elementReady(".pot", function() {
         $(".pot-frame#0").addClass('visible')
     }
     
-    animatePlant = function(nix) {
-        next_index = nix;
-        var period = 1/fps*1000;
-        curr = $(".pot-frame.visible");
+    animatePlant = function() {
         if(!refereshing) {
-            curr_index = parseInt(curr.attr('id'));
             refereshing = true;
-            (function animate(curr_index) {
+            var period = 1/fps*1000;
+            (function animate() {
                 setTimeout(function () {
-                    
+                    target = $(".pot-frame.target").attr('id');
+                    curr = $(".pot-frame.visible");
+                    curr_index = parseInt(curr.attr('id'));
                     step = 1;
-                    if (next_index < curr_index) {
+                    if (target < curr_index) {
                         step = -1;
-                    }
-                    
-                    
-                    curr_index = curr_index + step;
-                    $(".pot-frame#"+curr_index.toString()).addClass('visible');
-                    $(".pot-frame#"+(curr_index - step).toString()).removeClass('visible');
-                    if (next_index != curr_index) {
-                        
-                        animate(curr_index);
+                    }                    
+                    if (target != curr_index) {
+                        curr_index = curr_index + step;
+                        $(".pot-frame#"+curr_index.toString()).addClass('visible');
+                        $(".pot-frame#"+(curr_index - step).toString()).removeClass('visible');
+                        animate();
                     }
                     else {
+                        
                         refereshing = false;
                     }
               }, period);
-            })(curr_index);
+            })();
         }
     }
     
@@ -98,25 +95,23 @@ $.elementReady(".pot", function() {
             val > h_range['high'] ? val = h_range['high'] : val;
             val < h_range['low'] ? val = h_range['low'] : val;
             nix = Math.round((val-h_range['low'])/tolerance);
-            if(!refereshing) {
-                animatePlant(nix);
-            }
-            else {
-                setTimeout(function () {
-                    if(!refereshing) {
-                        animatePlant(nix);
-                    }
-                }, update_rate/4);
-            }
-        });
-        
-        
+            $('#circle').circleProgress({animationStartValue: current_value, value: val/h_range['high']});
+            current_value = val/h_range['high'];
+            $(".pot-frame.target").removeClass('target');
+            $(".pot-frame#"+nix.toString()).addClass('target');
+        });           
     }
     
     
-    setupPot({set: 1, prefix: '2774849 ', pad: 3, from: 550, to: 50, fps:50})
+    // setupPot({set: 1, prefix: '2774849 ', pad: 3, from: 550, to: 50, fps:50})
+//    setupPot({set: 3, prefix: 'fl1-', pad: 8, from: 310, to: 420, fps:24})
 //    setupPot({set: 2, prefix: '2774849 ', pad: 3, from: 550, to: 50, ratio: 20, fps:2})
+//    setupPot({set: 3, prefix: 'fl1-', pad: 8, from: 444, to: 558, fps:24})
+    setupPot({set: 3, prefix: 'fl1-', pad: 8, from: 580, to: 723, fps:24})
+//    setupPot({set: 3, prefix: 'fl1-', pad: 8, from: 1488, to: 1604, fps:24})
+//    setupPot({set: 3, prefix: 'fl1-', pad: 8, from: 2461, to: 2540, fps:24})
     setInterval(updateHumidityIndex, update_rate);
+    setInterval(animatePlant, 1000);
     
 //    setupPot({
 //        prefix: '656683 ', 
