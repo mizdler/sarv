@@ -4,6 +4,7 @@ var server = new Hapi.Server();
 server.connection({ port: 5060 });
 
 var lastHumidity;
+var led = 0;
 
 server.route({
     method: 'GET',
@@ -16,12 +17,20 @@ server.route({
 
 server.route({
     method: 'GET',
-    path: '/update',
+    path: '/{path*}',
+    handler: {
+        directory: { path: './public', listing: false, index: true }
+    }
+});
+
+server.route({
+    method: 'GET',
+    path: '/updateHumidity',
     handler: function (request, reply) {
         console.log(request.url);
         lastHumidity = encodeURIComponent(request.query.humidity);
         console.log("lastHumidity = " + lastHumidity);
-        //reply('Hello, ' + JSON.stringify(request.query) + '!');
+        reply('<iot>GOOD</iot>');
     }
 });
 
@@ -30,17 +39,36 @@ server.route({
     path: '/getHumidity',
     config: {cors: {origin: ['*']}},
     handler: function (request, reply) {
-        var random = Math.floor(Math.random() * 400)
-        console.log(random);
-
         console.log(request.url);
-        reply({ value: random });   //sould be replaced with lastHumidity
+        reply({ value: lastHumidity });   //sould be replaced with lastHumidity
     }
 });
 
 server.route({
     method: 'GET',
-    path: '/demo/{x*}',
+    path: '/updateLED',
+    handler: function (request, reply) {
+        console.log(request.url);
+        led = encodeURIComponent(request.query.led);
+        console.log("led = " + led);
+        
+        reply('<iot>GOOD</iot>');
+    }
+});
+
+server.route({
+    method: 'GET',
+    path: '/getLED',
+    config: {cors: {origin: ['*']}},
+    handler: function (request, reply) {
+        console.log(request.url);
+        reply('<iot>' + led + '</iot>');   //sould be replaced with lastHumidity
+    }
+});
+
+server.route({
+    method: 'GET',
+    path: '/demo/{param*}',
     handler: {
         directory: {
             path: 'demo'

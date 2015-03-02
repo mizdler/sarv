@@ -1,0 +1,19 @@
+<html>
+<title>LED PAGE</title>
+<head>
+	 <script type="text/javascript" src="../javascripts/jquery.min.js"></script> 
+</head>
+<body>
+	<input id="btnLED" type="button" value="toggle LED"/>
+</body>
+
+<script type="text/javascript">
+	var ledValue = 0;
+	$('#btnLED').click(function(){
+		ledValue = ledValue==0?1:0;
+		console.log('ledValue= ' + ledValue);
+		$.get('http://localhost:5060/updateLED?led=' + ledValue);
+	});
+</script>
+
+</html>
